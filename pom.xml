@@ -10,6 +10,18 @@
     <modules>
         <module>Thread1</module>
         <module>Thread2</module>
+        <module>Thread4</module>
+        <module>Thread5</module>
+        <module>Thread6</module>
+        <module>Thread7</module>
+        <module>Thread8</module>
+        <module>Thread9</module>
+        <module>Thread10</module>
+        <module>Thread11</module>
+        <module>Thread12</module>
+        <module>Thread13</module>
+        <module>Thread14</module>
+        <module>Thread15</module>
     </modules>
     <packaging>pom</packaging>
     <name>Java Multithreading Parent</name>
