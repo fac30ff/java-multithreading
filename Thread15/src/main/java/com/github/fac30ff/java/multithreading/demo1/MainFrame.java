@@ -2,9 +2,11 @@ package com.github.fac30ff.java.multithreading.demo1;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainFrame extends JFrame{
-    private JLabel count1 = new JLabel("0");
+    private JLabel countLabel1 = new JLabel("0");
     private JLabel statusLabel = new JLabel("Task not completed");
     private JButton startButton = new JButton("Start");
 
@@ -17,7 +19,7 @@ public class MainFrame extends JFrame{
         gc.gridy = 1;
         gc.weightx = 1;
         gc.weighty = 1;
-        add(count1, gc);
+        add(countLabel1, gc);
         gc.gridx = 0;
         gc.gridy = 1;
         gc.weightx = 1;
@@ -35,14 +37,32 @@ public class MainFrame extends JFrame{
     }
     private void start() {
         System.out.println("start");
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+        SwingWorker<Boolean, Integer> worker = new SwingWorker<Boolean, Integer>() {
             @Override
-            protected Void doInBackground() throws Exception {
+            protected Boolean doInBackground() throws Exception {
                 for (int i = 0; i < 30; i++) {
                     Thread.sleep(100);
                     System.out.println("Hello: " + i);
+                    publish(i);
                 }
-                return null;
+                return true;
+            }
+
+            @Override
+            protected void process(List<Integer> list) {
+                int value = list.get(list.size() - 1);
+                countLabel1.setText("Current value: " + value);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    Boolean status = get();
+                statusLabel.setText("Completed with status: " + status);
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Done");
             }
         };
         worker.execute();
